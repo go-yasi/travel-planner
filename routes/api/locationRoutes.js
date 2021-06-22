@@ -4,9 +4,7 @@ const {Location, Traveller, Trip} = require("../../models");
 // GET route /api/locations returns all location data in Insomnia Core.
 router.get("/", async (req,res) => {
   try{
-      const locationData = await Location.findAll({
-          include: [{model:Traveller}, {model: Trip}],
-      }); 
+      const locationData = await Location.findAll(); 
       res.status(200).json(locationData); 
   } catch (err){
       res.status(500).json(err); 
