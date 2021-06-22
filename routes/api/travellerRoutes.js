@@ -11,7 +11,12 @@ router.get('/', async (req, res) => {
 
 // POST route /api/travellers creates traveller data
 router.post('/', async (req, res) => {
-
+    try {
+        const travellerData = await Traveller.create(req.body);
+        res.status(200).json(travellerData);
+    } catch (err) {
+        res.status(400).json(err);
+    }
 });
 
 // GET route /api/travellers/:id returns a single traveller's data with their associated trips
