@@ -1,9 +1,12 @@
 const router = require('express').Router();
-const { Traveller, Trip, Location } = require('../../models');
+const { Traveller, Trip} = require('../../models');
 
 // GET route /api/travellers returns all traveller data without associated trips
-router.get('/:id', async (req, res) => {
-
+router.get('/', async (req, res) => {
+    const travellerData = await Traveller.findAll().catch((err) => {
+        res.json(err);
+    });
+    res.json(travellerData);
 });
 
 // POST route /api/travellers creates traveller data
