@@ -9,26 +9,28 @@ router.post('/', async (req, res) => {
         const tripData = await Trip.create({
             include: [{ model: Traveller }, { model: Location }],
         });
-    res.status(200).json(tripData);
-} catch (err) {
-res.status(400).json(err);
-}
+        res.status(200).json(tripData);
+    } catch (err) {
+        res.status(400).json(err);
+    }
 })
 
 // DELETE route /api/trips/:id removes a trip 
 router.delete('/:id', async (req, res) => {
     try {
-const tripData = await Trip.destroy({
-    where: {
-        id: req.params.id,
+        const tripData = await Trip.destroy({
+            where: {
+                id: req.params.id,
+            }
+        });
+        if (!tripData) {
+            res.status(404).json({ message: 'No trip found with that id!' });
+            return;
+        }
+        res.status(200).json(tripData);
+    } catch (err) {
+        res.status(500).json(err);
     }
 });
-    if (!tripData){
-        res.status(404).json({message: 'No trip found with that id!'});
-        return;
-    }
-    res.status(200).json(tripData);
-} catch (err){
-res.status(500).json(err);
-}
-});
+
+module.exports = router;
