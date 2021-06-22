@@ -37,7 +37,21 @@ router.get('/:id', async (req, res) => {
 
 // DELETE route /api/travellers/:id removes a traveller and any trips associated with them
 router.delete('/:id', async (req, res) => {
+    try {
+        const travellerData = await Traveller.destroy({
+            where: {
+                id: req.params.id,
+            },
+        });
 
+        if (!travellerData) {
+            res.status(404).json({ message: "No traveller found with that ID!" })
+        }
+
+        res.status(200).json(travellerData);
+    } catch (err) {
+        res.status(500).json(err);
+    }
 });
 
 module.exports = router;
