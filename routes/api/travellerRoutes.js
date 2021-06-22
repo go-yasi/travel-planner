@@ -21,9 +21,19 @@ router.post('/', async (req, res) => {
 
 // GET route /api/travellers/:id returns a single traveller's data with their associated trips
 router.get('/:id', async (req, res) => {
-
+    try {
+        const travellerData = await Traveller.findByPk(req.params.id, {
+            include: [{ model: Trip }],
+        });
+        if (!travellerData) {
+            res.status(404).json({ message: "No traveller found with that ID!" });
+            return;
+        }
+        res.status(200).json(travellerData);
+    } catch(err) {
+        ers.status(500).json(err);
+    }
 });
-
 
 // DELETE route /api/travellers/:id removes a traveller and any trips associated with them
 router.delete('/:id', async (req, res) => {
